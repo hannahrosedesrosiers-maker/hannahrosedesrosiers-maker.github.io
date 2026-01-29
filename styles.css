@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=BBH+Bogle&family=Quicksand:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quicksand:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Quicksand:wght@300..700&family=Snowburst+One&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+.bbh-bogle-regular,h2 {
+  font-family: "BBH Bogle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+}
+h2{
+  font-size: 30px;
+}
+body {
+  height: 100vh;
+  font-family: 'Oswald', 'Arial Black', sans-serif;
+  background: #f1f2f6;
+  color: #000;
+}
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 75px;
+  height: 100%;
+  background: #685d90;
+  padding: 16px;
+  position: fixed;
+  left: 0px;
+}
+
+/* .logo {
+
+  font-family: "Bungee Spice", sans-serif;;
+  font-size: 18px;
+  margin-bottom: 16px;
+  background: #25283d;
+  padding: 5px;
+  font-size: 40px;
+  
+} */
+
+.logo {
+
+  font-family: "Snowburst One", system-ui;
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: white;
+  background: #25283d;
+  padding: 5px;
+  font-size: 40px;
+  
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-link {
+  padding: 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #fff;
+  width:fit;
+  background-color: #8675a1;
+}
+
+.nav-link:hover {
+  background: #e56399;
+  color: #fff;
+}
+
+.nav-link.active {
+  background: #25283d;
+  color: #fff;
+}
+.main{
+  margin-left: 75px;
+    flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main area */
+.main>section {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 16px;
+
+  font-size: 30px;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.content {
+  padding: 20px;
+  overflow-y: auto;
+}
+img{
+  max-width: 300px;
+}
+.projects{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+form {
+  background-color: white;
+  max-width: 800px;
+  margin-inline: auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+input{
+  padding: 13px;
+  border: solid 2px black;
+}
+
+button {
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: fit;
+  
+  
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.form-row .form-field {
+  flex-direction: column;
+  display: flex;
+  justify-items: center;
+}
+.contact-top{
+  margin-bottom: 15px;
+}
+.fill-contact{
+  text-align: center;
+}
+
+.welcome{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.about-me{
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.current{
+
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.first-digi{
+  text-align: center;
+  margin-bottom: 20px;
+  
+}
+.quicksand-400 {
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.home{
+  font-family: 'Quicksand';
+  font-weight: 500;
+  font-size: larger;
+
+}
+
+.bungee-spice-regular {
+  font-family: "Bungee Spice", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.snowburst-one-regular {
+  font-family: "Snowburst One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+*{
+  transition-duration: 400ms;
+}
+
+.hobby{
+  margin-top: auto;
+  text-align: left;
+  margin-bottom: 15px;
+}
+.ul{
+  margin-bottom: 10px;
+}
