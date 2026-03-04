@@ -2,129 +2,716 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Portfolio</title>
+  <title>Hannah R.D. — Projects</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-     <script src="https://cdn.tailwindcss.com"></script><style type="text/tailwindcss">
-        @import "tailwindcss";
-        @custom-variant dark (&:where(.dark, .dark *));
-    </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── OVERLAY ── */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30,17,24,0.55);
+      backdrop-filter: blur(3px);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: #faf7f2;
+      border: 2px solid #1e1118;
+      border-radius: 20px;
+      padding: 32px 30px 28px;
+      width: min(500px, 92vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 6px 8px 0 #1e1118;
+      animation: popIn 0.25s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.88) translateY(20px); opacity: 0; }
+      to   { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      margin-bottom: 4px;
+      color: #1e1118;
+    }
+
+    .modal-sub {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: #c94a72;
+      margin-bottom: 20px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      color: #4a2d3a;
+      line-height: 1;
+      transition: transform 0.2s;
+      padding: 0;
+    }
+    .modal-close:hover { transform: rotate(90deg); }
+
+    .modal .form-field { margin-bottom: 14px; }
+
+    .modal label {
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #4a2d3a;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .modal input[type="text"],
+    .modal input[type="url"],
+    .modal input[type="password"],
+    .modal textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 2px solid #e0d8d0;
+      border-radius: 10px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.9rem;
+      background: #f5f0ea;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .modal input:focus, .modal textarea:focus { border-color: #e8829a; }
+    .modal textarea { resize: vertical; }
+
+    /* image upload */
+    .img-upload-area {
+      border: 2px dashed #e8829a;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      background: #fff0f5;
+      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .img-upload-area:hover { background: #ffd6e7; }
+    .img-upload-area input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: #c94a72;
+      pointer-events: none;
+      display: block;
+    }
+    .img-preview {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: none;
+      margin-top: 8px;
+      border: 2px solid #e0d8d0;
+    }
+    .img-preview.visible { display: block; }
+
+    /* modal footer */
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-submit {
+      padding: 10px 26px;
+      background: #1e1118;
+      color: #f9e07f;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-submit:hover { background: #c94a72; transform: scale(1.04); }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+
+    .btn-cancel {
+      padding: 10px 20px;
+      background: transparent;
+      color: #4a2d3a;
+      border: 2px solid #e0d8d0;
+      border-radius: 50px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-cancel:hover { border-color: #c94a72; color: #c94a72; }
+
+    .modal-error {
+      color: #c94a72;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 6px;
+      display: none;
+    }
+    .modal-error.show { display: block; }
+
+    .field-note {
+      font-size: 0.75rem;
+      color: #9d6070;
+      margin-top: 3px;
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* ── ADD BUTTON ── */
+    .add-project-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: #1e1118;
+      color: #f4b8cb;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 28px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .add-project-btn:hover { background: #c94a72; color: white; transform: scale(1.04); }
+
+    /* ── CARD ADMIN BUTTONS ── */
+    .card-actions {
+      position: absolute;
+      top: 8px; right: 8px;
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    .card-edit,
+    .card-delete {
+      border: none;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .card-edit {
+      background: #f9e07f;
+      color: #1e1118;
+    }
+    .card-edit:hover { background: #f4b8cb; }
+
+    .card-delete {
+      background: #1e1118;
+      color: #f9e07f;
+    }
+    .card-delete:hover { background: #c94a72; }
+
+    .project-card { position: relative; }
+
+    .card-placeholder-img {
+      width: 100%;
+      height: 170px;
+      background: linear-gradient(135deg, #f4b8cb, #d8c4f0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 2px solid #1e1118;
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: #4a2d3a;
+    }
+
+    /* ── LOADING ── */
+    .loading-state {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: #c94a72;
+      padding: 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f4b8cb;
+      border-top-color: #c94a72;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .fetch-error {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: #c94a72;
+      background: #fff0f5;
+      border: 2px dashed #e8829a;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: none;
+    }
+    .fetch-error.show { display: block; }
+
+    .saving-msg {
+      font-family: 'Caveat', cursive;
+      font-size: 0.95rem;
+      color: #c94a72;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .saving-msg.show { display: flex; }
+
+    .current-img-thumb {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #e0d8d0;
+      margin-bottom: 8px;
+      display: none;
+    }
+    .current-img-thumb.visible { display: block; }
+  </style>
 </head>
 <body>
-    
 
 <div class="layout">
-  <!-- Sidebar -->
   <aside class="sidebar">
-    
-
+    <span class="logo">HRD</span>
     <nav>
-      <a href='index.html' class="nav-link material-icons">home</a>
-      <a href='projects.html' class="nav-link active material-icons">design_services</a>
-      <a href='skills.html' class="nav-link material-icons">star_shine</a>
-      <a href='contact.html' class="nav-link material-icons">person</a>
+      <a href="index.html"    class="nav-link material-icons"        title="Home">home</a>
+      <a href="projects.html" class="nav-link active material-icons" title="Projects">design_services</a>
+      <a href="skills.html"   class="nav-link material-icons"        title="Skills">auto_awesome</a>
+      <a href="contact.html"  class="nav-link material-icons"        title="Contact">person</a>
     </nav>
   </aside>
 
-  <!-- Main content -->
   <main class="main">
-    <h1 class="logo">HRD</h1>
-    <section>
-    <header class="header">
-      <h2 class="text-5xl">My Projects</h2>
-    </header>
-
-    <section class="content">
-        
-    </section>
-
-    <section class="projects md:grid-cols-2 grid p-3 gap-3 max-w-4xl mr-auto ml-auto">
-
-
-<div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 theme-dark">
-    <a href="#">
-        <!-- img -->
-        <img class="rounded-t-lg" src="images-projects/Screenshot 2026-01-28 at 1.47.50 AM.png" alt="" />
-    </a>
-    <div class="p-5">
-        <a href="#">
-            <!-- title -->
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Shape Battles</h5>
-        </a>
-        <!-- desc -->
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">A shape battling game in which users choose a shape, chase an enemy and battle!!</p>
-       <!-- redirect-->
-        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            More
-             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
+    <div class="marquee-bar">
+      <div class="marquee-inner">
+        my projects ✿ &nbsp; shape battles &nbsp; ✿ cli quizbowl &nbsp; ✿ old html exploring &nbsp; ✿ more coming soon &nbsp; ✿ &nbsp;
+        my projects ✿ &nbsp; shape battles &nbsp; ✿ cli quizbowl &nbsp; ✿ old html exploring &nbsp; ✿ more coming soon &nbsp; ✿ &nbsp;
+      </div>
     </div>
-</div>
 
-
-
-
-<div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-    <a href="#">
-        <!-- img -->
-        <img class="rounded-t-lg" src="images-projects/Screenshot 2026-01-28 at 2.34.03 AM.png" alt="" />
-    </a>
-    <div class="p-5">
-        <a href="#">
-            <!-- title -->
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">ClI Quizbowl!!</h5>
-        </a>
-        <!-- desc -->
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">A fun CLI based quiz game!</p>
-       <!-- redirect-->
-        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            More
-             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
+    <div class="page-top fadein d1">
+      <h2>My <em>Projects</em></h2>
     </div>
-</div>
 
+    <div class="projects-body">
 
+      <button class="add-project-btn" id="openModalBtn">
+        <span class="material-icons" style="font-size:18px;">add_circle</span>
+        Add Project
+      </button>
 
+      <div id="loadingState" class="loading-state">
+        <span class="spinner"></span> loading projects...
+      </div>
 
+      <p class="fetch-error" id="fetchError">
+        couldn't load projects right now — check your connection and refresh! 🌸
+      </p>
 
+      <div class="projects-grid" id="projectsGrid"></div>
 
-<div class=" bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-    <a href="#">
-        <!-- img -->
-        <img class="rounded-t-lg" src="images-projects/Screenshot 2026-01-28 at 2.38.39 AM.png" alt="" />
-    </a>
-    <div class="p-5">
-        <a href="#">
-            <!-- title -->
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Old HTML Exploring</h5>
-        </a>
-        <!-- desc -->
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Exploring older HTML methods and effects like Marquee and more!!</p>
-       <!-- redirect-->
-        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            More
-             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-        </a>
     </div>
-</div>
-    
-        
-
-
-    </section>
-    
-  </section>
   </main>
 </div>
 
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="modal-close" id="closeModalBtn">✕</button>
+
+    
+    <div class="step active" id="stepPassword">
+      <h3>Admin Access</h3>
+      <p class="modal-sub">enter your code to continue ✿</p>
+      <div class="form-field">
+        <label for="adminCode">Code</label>
+        <input type="password" id="adminCode" placeholder="••••" maxlength="10" autocomplete="off" />
+      </div>
+      <p class="modal-error" id="codeError">wrong code — try again!</p>
+      <div class="modal-footer">
+        <button class="btn-submit" id="checkCodeBtn">Unlock →</button>
+        <button class="btn-cancel" id="cancelCodeBtn">Cancel</button>
+      </div>
+    </div>
+
+    <div class="step" id="stepForm">
+      <h3 id="modalTitle">New Project</h3>
+      <p class="modal-sub" id="modalSub">fill in the details below ✿</p>
+
+      <div class="form-field">
+        <label for="projTitle">Title *</label>
+        <input type="text" id="projTitle" placeholder="e.g. My Cool App" />
+      </div>
+
+      <div class="form-field">
+        <label for="projDesc">Description *</label>
+        <textarea id="projDesc" rows="2" placeholder="A short description of your project"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="projLink">Project Link</label>
+        <input type="url" id="projLink" placeholder="https://github.com/yourname/repo" />
+        <p class="field-note">GitHub, live site, or demo — leave blank if none yet</p>
+      </div>
+
+      <div class="form-field">
+        <label>Screenshot / Image</label>
+        <!-- shown when editing and a current image exists -->
+        <img class="current-img-thumb" id="currentImgThumb" alt="current image" />
+        <p class="field-note" id="currentImgNote" style="display:none; margin-bottom:6px;">↑ current image — upload a new one below to replace it</p>
+        <div class="img-upload-area">
+          <input type="file" id="imgUpload" accept="image/*" />
+          <span class="upload-label" id="uploadLabel">📎 click to upload a screenshot</span>
+          <img class="img-preview" id="imgPreview" alt="preview" />
+        </div>
+      </div>
+
+      <p class="modal-error" id="formError">please add a title and description!</p>
+      <p class="modal-error" id="saveError">something went wrong — try again!</p>
+
+      <div class="modal-footer">
+        <button class="btn-submit" id="saveCardBtn">Add Project ✿</button>
+        <button class="btn-cancel" id="cancelFormBtn">Cancel</button>
+        <span class="saving-msg" id="savingMsg"><span class="spinner"></span> saving...</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIupXDOPOrPhEWH9Q_PeS3uI0o8AD2GAdjDs-TEvmI4XE3ELV_0iXuZlSsTiZgV_U7ZQ/exec';
+  var CODE = '0408';
+
+  var pendingAction  = 'add'; // 'add' | 'edit' | 'delete'
+  var pendingProject = null;  // project object being edited/deleted
+  var pendingCard    = null;  // card DOM element being edited/deleted
+  var pendingImage   = null;  // base64 string from file input
+
+  var overlay        = document.getElementById('overlay');
+  var openModalBtn   = document.getElementById('openModalBtn');
+  var closeModalBtn  = document.getElementById('closeModalBtn');
+  var stepPassword   = document.getElementById('stepPassword');
+  var stepForm       = document.getElementById('stepForm');
+  var adminCode      = document.getElementById('adminCode');
+  var codeError      = document.getElementById('codeError');
+  var checkCodeBtn   = document.getElementById('checkCodeBtn');
+  var cancelCodeBtn  = document.getElementById('cancelCodeBtn');
+  var cancelFormBtn  = document.getElementById('cancelFormBtn');
+  var modalTitle     = document.getElementById('modalTitle');
+  var modalSub       = document.getElementById('modalSub');
+  var projTitle      = document.getElementById('projTitle');
+  var projDesc       = document.getElementById('projDesc');
+  var projLink       = document.getElementById('projLink');
+  var imgUpload      = document.getElementById('imgUpload');
+  var imgPreview     = document.getElementById('imgPreview');
+  var uploadLabel    = document.getElementById('uploadLabel');
+  var currentThumb   = document.getElementById('currentImgThumb');
+  var currentNote    = document.getElementById('currentImgNote');
+  var saveCardBtn    = document.getElementById('saveCardBtn');
+  var formError      = document.getElementById('formError');
+  var saveError      = document.getElementById('saveError');
+  var savingMsg      = document.getElementById('savingMsg');
+  var grid           = document.getElementById('projectsGrid');
+  var loadingState   = document.getElementById('loadingState');
+  var fetchError     = document.getElementById('fetchError');
+
+  function openForAdd() {
+    pendingAction  = 'add';
+    pendingProject = null;
+    pendingCard    = null;
+    resetFormFields();
+    modalTitle.textContent = 'New Project';
+    modalSub.textContent   = 'fill in the details below ✿';
+    saveCardBtn.textContent = 'Add Project ✿';
+    currentThumb.classList.remove('visible');
+    currentNote.style.display = 'none';
+    showOverlay('password');
+  }
+
+  function openForEdit(project, card) {
+    pendingAction  = 'edit';
+    pendingProject = project;
+    pendingCard    = card;
+    resetFormFields();
+    modalTitle.textContent  = 'Edit Project';
+    modalSub.textContent    = 'update the details below ✿';
+    saveCardBtn.textContent = 'Save Changes ✿';
+    /* pre-fill */
+    projTitle.value = project.title;
+    projDesc.value  = project.desc;
+    projLink.value  = project.link || '';
+    /* show existing image thumbnail */
+    if (project.image) {
+      currentThumb.src = project.image;
+      currentThumb.classList.add('visible');
+      currentNote.style.display = 'block';
+    } else {
+      currentThumb.classList.remove('visible');
+      currentNote.style.display = 'none';
+    }
+    showOverlay('password');
+  }
+
+  function openForDelete(project, card) {
+    pendingAction  = 'delete';
+    pendingProject = project;
+    pendingCard    = card;
+    showOverlay('password');
+  }
+
+  function showOverlay(step) {
+    adminCode.value = '';
+    codeError.classList.remove('show');
+    formError.classList.remove('show');
+    saveError.classList.remove('show');
+    savingMsg.classList.remove('show');
+    saveCardBtn.disabled = false;
+    stepPassword.classList.toggle('active', step === 'password');
+    stepForm.classList.toggle('active',     step === 'form');
+    overlay.classList.add('open');
+    setTimeout(function() { adminCode.focus(); }, 50);
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+  }
+
+  function resetFormFields() {
+    projTitle.value = '';
+    projDesc.value  = '';
+    projLink.value  = '';
+    imgUpload.value = '';
+    imgPreview.src  = '';
+    imgPreview.classList.remove('visible');
+    uploadLabel.textContent = '📎 click to upload a screenshot';
+    pendingImage = null;
+  }
+
+  openModalBtn.addEventListener('click', openForAdd);
+  closeModalBtn.addEventListener('click', closeModal);
+  cancelCodeBtn.addEventListener('click', closeModal);
+  cancelFormBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+  checkCodeBtn.addEventListener('click', function() {
+    if (adminCode.value !== CODE) {
+      codeError.classList.add('show');
+      adminCode.value = '';
+      return;
+    }
+    codeError.classList.remove('show');
+
+    if (pendingAction === 'delete') {
+      closeModal();
+      doDelete(pendingProject, pendingCard);
+    } else {
+      /* add or edit — show form */
+      stepPassword.classList.remove('active');
+      stepForm.classList.add('active');
+      setTimeout(function() { projTitle.focus(); }, 50);
+    }
+  });
+  adminCode.addEventListener('keydown', function(e) { if (e.key === 'Enter') checkCodeBtn.click(); });
+
+  imgUpload.addEventListener('change', function() {
+    var file = imgUpload.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      pendingImage = ev.target.result;
+      imgPreview.src = pendingImage;
+      imgPreview.classList.add('visible');
+      uploadLabel.textContent = '✓ ' + file.name;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  saveCardBtn.addEventListener('click', function() {
+    if (!projTitle.value.trim() || !projDesc.value.trim()) {
+      formError.classList.add('show');
+      return;
+    }
+    formError.classList.remove('show');
+    saveError.classList.remove('show');
+    saveCardBtn.disabled = true;
+    savingMsg.classList.add('show');
+
+    if (pendingAction === 'add') {
+      var project = {
+        id:    Date.now().toString(),
+        title: projTitle.value.trim(),
+        desc:  projDesc.value.trim(),
+        link:  projLink.value.trim(),
+        image: pendingImage || ''
+      };
+      apiPost({ code: CODE, action: 'add', project: project }, function(ok) {
+        savingMsg.classList.remove('show');
+        saveCardBtn.disabled = false;
+        if (ok) {
+          grid.appendChild(buildCard(project));
+          closeModal();
+        } else {
+          saveError.classList.add('show');
+        }
+      });
+
+    } else if (pendingAction === 'edit') {
+      var updated = {
+        id:    pendingProject.id,
+        title: projTitle.value.trim(),
+        desc:  projDesc.value.trim(),
+        link:  projLink.value.trim(),
+        image: pendingImage || pendingProject.image || ''
+      };
+      apiPost({ code: CODE, action: 'edit', project: updated }, function(ok) {
+        savingMsg.classList.remove('show');
+        saveCardBtn.disabled = false;
+        if (ok) {
+          /* replace the card in-place */
+          var newCard = buildCard(updated);
+          grid.replaceChild(newCard, pendingCard);
+          closeModal();
+        } else {
+          saveError.classList.add('show');
+        }
+      });
+    }
+  });
+
+  function doDelete(project, card) {
+    card.style.opacity = '0.4';
+    apiPost({ code: CODE, action: 'delete', id: project.id }, function(ok) {
+      if (ok) {
+        card.remove();
+      } else {
+        card.style.opacity = '1';
+        alert('Could not delete — try again!');
+      }
+    });
+  }
+
+  function apiPost(body, cb) {
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(body) })
+      .then(function(r) { return r.json(); })
+      .then(function(data) { cb(data.ok); })
+      .catch(function() { cb(false); });
+  }
+
+  function buildCard(project) {
+    var card = document.createElement('div');
+    card.className = 'project-card fadein';
+    card.dataset.pid = project.id;
+
+    var imgEl = project.image
+      ? '<img src="' + project.image + '" alt="' + escHtml(project.title) + '" style="width:100%;height:170px;object-fit:cover;display:block;border-bottom:2px solid #1e1118;" />'
+      : '<div class="card-placeholder-img">no screenshot yet 🌸</div>';
+
+    var linkEl = project.link
+      ? '<a href="' + escHtml(project.link) + '" target="_blank" rel="noopener" class="btn-more">View →</a>'
+      : '<span style="font-size:0.8rem;color:#9d6070;font-style:italic;">link coming soon</span>';
+
+    card.innerHTML =
+      '<div class="card-actions">' +
+        '<button class="card-edit">✏️ edit</button>' +
+        '<button class="card-delete">✕ remove</button>' +
+      '</div>' +
+      imgEl +
+      '<div class="card-body">' +
+        '<h3>' + escHtml(project.title) + '</h3>' +
+        '<p>'  + escHtml(project.desc)  + '</p>' +
+        linkEl +
+      '</div>';
+
+    card.querySelector('.card-edit').addEventListener('click', function() {
+      openForEdit(project, card);
+    });
+
+    card.querySelector('.card-delete').addEventListener('click', function() {
+      openForDelete(project, card);
+    });
+
+    return card;
+  }
+
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  function loadProjects() {
+    loadingState.style.display = 'flex';
+    fetchError.classList.remove('show');
+    fetch(SCRIPT_URL)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        loadingState.style.display = 'none';
+        if (data.ok && data.projects) {
+          grid.innerHTML = '';
+          data.projects.forEach(function(p) {
+            grid.appendChild(buildCard(p));
+          });
+        }
+      })
+      .catch(function() {
+        loadingState.style.display = 'none';
+        fetchError.classList.add('show');
+      });
+  }
+
+  loadProjects();
+</script>
+
 </body>
 </html>
-v
