@@ -2,88 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>My Portfolio</title>
+  <title>Hannah R.D. — Contact</title>
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-        <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="layout">
-  <!-- Sidebar -->
   <aside class="sidebar">
-    
-
+    <span class="logo">HRD</span>
     <nav>
-      <a href='index.html' class="nav-link material-icons">home</a>
-      <a href='projects.html' class="nav-link material-icons">design_services</a>
-      <a href='skills.html' class="nav-link material-icons">star_shine</a>
-      <a href='contact.html' class="nav-link active material-icons">person</a>
+      <a href="index.html"    class="nav-link material-icons"        title="Home">home</a>
+      <a href="projects.html" class="nav-link material-icons"        title="Projects">design_services</a>
+      <a href="skills.html"   class="nav-link material-icons"        title="Skills">auto_awesome</a>
+      <a href="contact.html"  class="nav-link active material-icons" title="Contact">person</a>
     </nav>
   </aside>
 
-  <!-- Main content -->
   <main class="main">
-    <h1 class="logo">HRD</h1>
-    <section>
+    <div class="marquee-bar">
+      <div class="marquee-inner">
+        let's connect ✿ &nbsp; open to internships &nbsp; ✿ mentorships &nbsp; ✿ collabs &nbsp; ✿ reach out!! &nbsp; ✿ &nbsp;
+        let's connect ✿ &nbsp; open to internships &nbsp; ✿ mentorships &nbsp; ✿ collabs &nbsp; ✿ reach out!! &nbsp; ✿ &nbsp;
+      </div>
+    </div>
 
-    <section class="content">
+    <div class="page-top fadein d1">
+      <h2>Let's <em>Talk</em></h2>
+    </div>
 
+    <div class="contact-body">
 
+      <div class="contact-left fadein d2">
+        <p class="contact-blurb">
+          Have a project in mind? I'm open to <em>internships, mentorships &amp; collabs.</em>
+        </p>
 
-    <form method="post" action="https://formspree.io/f/xbdovwjv">
-      <!-- The form's title -->
-      <h2 class="text-4xl">Contact Form</h2>
+        <ul class="contact-links-list">
+          <li> <a href="#">LinkedIn ↗</a></li>
+          <li> <a href="#">Instagram ↗</a></li>
+          <li> <a href="#">GitHub ↗</a></li>
+        </ul>
 
-      <!-- Every label/input pair gets a div container -->
-      <div class="form-row">
-        <div class="form-field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="Name" />
+        <div class="contact-sticker">
+          or just fill out the form — I love meeting people!! 
         </div>
-
-     <div class="form-row">
-        <div class="form-field">
-          <label for="email">Email</label>
-          <input type="text" id="email" name="email" />
-        </div>
-
-
-        <div class="form-row">
-        <div class="form-field">
-          <label for="number">Number</label>
-          <input type="number" id="number" name="number" />
-        </div>
-
-        <div class="form-row">
-        <div class="form-field">
-          <label for="links">Links</label>
-          <input type="links" id="url" name="links" />
-        </div>
-
-
-
-      
-      <div class="form-field">
-        <label for="notes">Notes</label>
-        <textarea id="notes" rows="5" cols="40" placeholder="Brief description of contact purpose" name="notes"></textarea>
       </div>
 
-      
-      <button type="submit">Submit Form</button>
-    
-    </section>
+      <div class="contact-form-wrap fadein d3">
+        <form method="post" action="https://formspree.io/f/xbdovwjv">
+          <h2>Say hi! </h2>
 
-            <p class="contact-top px-5">Have a project in mind? I'm open to internships, mentorships, collabs and more!!! Reach out let's talk!</p>
-        
-        <p class="px-5">You can find me at these links <br>
-    LinkedIn: <br>
-    Instagram: <br>
-    Github:<br>
-            <p class="fill-contact px-5">Orr... Fill out the contact form above!!</p>
-</p>
-  </section>
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="Name" placeholder="Your name" />
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" />
+          </div>
+ 
+          <div class="form-field">
+            <label for="number">Phone (optional)</label>
+            <input type="tel" id="number" name="number" placeholder="(555) 000-0000" />
+          </div>
+
+          <div class="form-field">
+            <label for="url">Links (optional)</label>
+            <input type="url" id="url" name="links" placeholder="https://..." />
+          </div>
+
+          <div class="form-field">
+            <label for="notes">Message</label>
+            <textarea id="notes" rows="4" name="notes" placeholder="Tell me about your project or idea!"></textarea>
+          </div>
+
+          <button type="submit">Send it →</button>
+        </form>
+      </div>
+
+    </div>
   </main>
 </div>
 
